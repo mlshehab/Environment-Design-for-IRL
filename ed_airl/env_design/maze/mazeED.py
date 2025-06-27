@@ -5,7 +5,6 @@ import numpy as np
 import random
 
 from env_design.env_params import EnvParams, EnvDesign
-from utils.distribution import loguniform
 
 
 @dataclass

@@ -33,7 +33,7 @@ class RandomMDP(gym.Env):
         self.n_demo = n_demo
         self.n_test = n_test
         self.rad_demo = rad_demo
-        self.rad_test = rad_test
+        self.rad_test = rad_test 
 
         # Actions are discrete integer values
         self.action_space = spaces.Discrete(n_actions)
@@ -207,3 +207,7 @@ class RandomMDP(gym.Env):
         #             # print("....", print(np.sum(state_P[a, :])))
         #             # print(np.random.choice(range(40), p=state_P[a, :]))
         return state_P
+
+if __name__ == "__main__":
+    env = RandomMDP(n_states=40, n_actions=4, n_demo=10, n_test=10, rad_demo=0.5, rad_test=0.75)
+    print(env.P.shape)

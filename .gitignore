@@ -1,0 +1,14 @@
+*.log
+*.png
+*.txt
+*.pdf
+*.csv
+*.json
+*.yaml
+*.yml
+*.xml
+*.html
+*.css
+*.js
+*.ts
+*.pyc

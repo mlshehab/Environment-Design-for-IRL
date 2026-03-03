@@ -23,14 +23,12 @@ def solve_orthogonal_env(base_env, gamma=0.95):
     n_sa = n_states * n_actions
 
     # 1. Construct M1 = E - gamma * P1
-    P = []
-    for a in range(n_actions):
-        P.append(base_env.P[:, a, :])
-    P1 = np.concatenate(P, axis=0)
-    E = np.zeros((n_sa, n_states))
-    for s in range(n_states):
-        for a in range(n_actions):
-            E[s * n_actions + a, s] = 1
+    # P = []
+    # for a in range(n_actions):
+    #     P.append(base_env.P[:, a, :])
+    # P1 = np.concatenate(P, axis=0)
+    P1 = np.vstack([base_env.P[:,a,:] for a in range(n_actions)])
+    E = np.vstack([np.eye(n_states) for _ in range(n_actions)])
     M1 = E - gamma * P1
 
     # 2. Get Orthonormal Basis U1 for col(M1) \ {1}
@@ -66,7 +64,7 @@ def solve_orthogonal_env(base_env, gamma=0.95):
     row_sums[row_sums == 0] = 1  # avoid division by zero, though should not be needed
     P_hat = P_hat / row_sums
     M_hat = E - gamma * P_hat
-
+    
     # 7. Dimension of Intersection (Grassmann Identity)
     tol = 1e-6
     r1 = np.linalg.matrix_rank(M1, tol=tol)
@@ -107,7 +105,29 @@ def build_orthogonal_env(base_env):
 # Example usage
 
 if __name__ == "__main__":
+
+    # n_states = 3
+    # n_actions = 2
+    # n_sa = n_states * n_actions
+    # E = np.vstack([np.eye(n_states) for _ in range(n_actions)])
+    
+    # print(E)
+    
+
     base_env = RandomMDP(n_states=40, n_actions=4, n_demo=10, n_test=10, rad_demo=0.5, rad_test=0.75)
+    
+    # n_states = base_env.state_space.n
+    # n_actions = base_env.action_space.n
+    # n_sa = n_states * n_actions
+
+    # # 1. Construct M1 = E - gamma * P1
+    # P = []
+    # for a in range(n_actions):
+    #     P.append(base_env.P[:, a, :])
+    # P1 = np.concatenate(P, axis=0)
+    # print(P1.sum(axis=1))
+    # input()
+    
     orth_env, intersection_dim, P_hat, M_hat = build_orthogonal_env(base_env)
 
     if orth_env is not None:
@@ -126,7 +146,11 @@ if __name__ == "__main__":
         print("Rank of M_hat: ", np.linalg.matrix_rank(M_hat))
         print("Rank of [M_hat, ones_vec]: ", np.linalg.matrix_rank(np.hstack([M_hat, ones_vec])))
     
-        print(f"Original M1 Rank: {np.linalg.matrix_rank(E - base_env.gamma * np.concatenate([base_env.P[:,a,:] for a in range(n_actions)], axis=0))}")
+        P1_check = np.zeros((n_sa, n_states))
+        for s in range(n_states):
+            for a in range(n_actions):
+                P1_check[s * n_actions + a, :] = base_env.P[s, a, :]
+        print(f"Original M1 Rank: {np.linalg.matrix_rank(E - base_env.gamma * P1_check)}")
         print(f"Intersection Dimension: {intersection_dim}")
     else:
         print("Orthogonal env construction failed.")

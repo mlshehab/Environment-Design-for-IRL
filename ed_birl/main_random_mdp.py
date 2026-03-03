@@ -90,6 +90,7 @@ for i in range(iterations):
             observations_ed.append(get_expert_trajectory(ed_mdp, traj_length))
             observations_rand.append(get_expert_trajectory(rand_mdp, traj_length))
             observations_fixed.append(get_expert_trajectory(mdp, traj_length))
+            model_mdp.set_rewards(original_rewards)
             observations_model.append(get_expert_trajectory(model_mdp, traj_length))
         posterior_samples_ed, posterior_mean_ed, posterior_map_ed, posterior_std_ed = bayesian_reward_learning(mdp, observations_ed, birl_sample_size, last_reward=posterior_mean_ed, proposal_distr='grid')
         posterior_samples_rand, posterior_mean_rand, posterior_map_rand, posterior_std_rand = bayesian_reward_learning(mdp, observations_rand, birl_sample_size, last_reward=posterior_mean_rand, proposal_distr='grid')

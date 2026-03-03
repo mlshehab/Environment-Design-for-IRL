@@ -109,7 +109,7 @@ for i in range(iterations):
             utility_ed.append(evaluate_reward(mdp, posterior_mean_ed))
             utility_rand.append(evaluate_reward(mdp, posterior_mean_rand))
             utility_fixed.append(evaluate_reward(mdp, posterior_mean_f))
-            utility_model.append(evaluate_reward(model_mdp, posterior_mean_model))
+            utility_model.append(evaluate_reward(mdp, posterior_mean_model))
         print('Fixed', utility_fixed)
         print('Dom. Rand.', utility_rand)
         print('ED-BIRL', utility_ed)

@@ -4,7 +4,6 @@
 *.csv
 *.json
 *.yaml
-*.yml
 *.xml
 *.html
 *.css

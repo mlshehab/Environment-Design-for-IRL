@@ -114,21 +114,14 @@ if __name__ == "__main__":
     # print(E)
     
 
-    base_env = RandomMDP(n_states=40, n_actions=4, n_demo=10, n_test=10, rad_demo=0.5, rad_test=0.75)
+    base_env = RandomMDP(n_states=5, n_actions=2, n_demo=10, n_test=10, rad_demo=0.5, rad_test=0.75)
     
-    # n_states = base_env.state_space.n
-    # n_actions = base_env.action_space.n
-    # n_sa = n_states * n_actions
-
-    # # 1. Construct M1 = E - gamma * P1
-    # P = []
-    # for a in range(n_actions):
-    #     P.append(base_env.P[:, a, :])
-    # P1 = np.concatenate(P, axis=0)
-    # print(P1.sum(axis=1))
-    # input()
+    original_P = np.vstack([base_env.P[:,a,:] for a in range(base_env.action_space.n)])
+    print(np.round(original_P, 2))
+    input()
     
     orth_env, intersection_dim, P_hat, M_hat = build_orthogonal_env(base_env)
+    print(f"The model P is: {np.round(P_hat, 2)}")
 
     if orth_env is not None:
         print(f"New environment's transitions set. Intersection dimension: {intersection_dim}")

@@ -72,10 +72,10 @@ for i in range(iterations):
                 observations_model.append(obs)
         else:
             observations_ed.append(get_expert_trajectory(ed_mdp, traj_length))
-            model_mdp.set_rewards(original_rewards)
+            
             observations_model.append(get_expert_trajectory(model_mdp, traj_length))
         posterior_samples_ed, posterior_mean_ed, posterior_map_ed, posterior_std_ed = bayesian_reward_learning(mdp, observations_ed, birl_sample_size, last_reward=posterior_mean_ed, proposal_distr='grid')
-        posterior_samples_model, posterior_mean_model, posterior_map_model, posterior_std_model = bayesian_reward_learning(model_mdp, observations_model, birl_sample_size, last_reward=posterior_mean_model, proposal_distr='grid')
+        posterior_samples_model, posterior_mean_model, posterior_map_model, posterior_std_model = bayesian_reward_learning(mdp, observations_model, birl_sample_size, last_reward=posterior_mean_model, proposal_distr='grid')
         
         if episode == 0:
             mdp.set_rewards(original_rewards)
